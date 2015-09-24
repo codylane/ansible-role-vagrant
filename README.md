@@ -11,7 +11,7 @@ Currenlty this role supports the following disributions:
 
 RedHat -> Installing vagrant, setting up RedHat base boxes
 
-Debian -> Installing vagrant 
+Debian -> Installing vagrant, setting up Debian base boxes
 
 
 Requirements
