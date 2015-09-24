@@ -96,8 +96,6 @@ Author Information
 ------------------
 Cody Lane
 
-Email: Cody.Lane@gmail.com
-
 NOTE: I want to make this better for everyone and I hope that folks find
 this role useful.  If you find a bug, please submit a pull request and
 I'll take a look and merge it as ASAP.  If you'd like additional
