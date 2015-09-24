@@ -1,0 +1,7 @@
+---
+# defaults file for vagrant
+
+users:
+  - name: vagrant
+    password: vagrant
+    shell: /bin/bash

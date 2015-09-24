@@ -1,0 +1,10 @@
+---
+
+- name: create vagrant base users
+  user:
+    name={{ item.name }}
+    state=present
+    password={{ item.password }}
+    shell={{ item.shell }}
+  with_items:
+    users

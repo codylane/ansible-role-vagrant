@@ -1,0 +1,3 @@
+---
+- name: configure a new base box
+  user:
