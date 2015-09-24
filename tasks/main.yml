@@ -5,9 +5,18 @@
   with_first_found:
     - "{{ ansible_os_family }}.yml"
 
+- include: vagrant_install.yml
+  tags: install_vagrant
+  when:
+    install_vagrant is defined
+
 - include: selinux.yml
+  tags: vagrant_selinux
+
 - include: users.yml
+  tags: vagrant_users
 
 - include: base_box.yml
+  tags: base_box
   when:
     create_base_box is defined

@@ -1,0 +1,2 @@
+[centos6u6]
+172.16.56.29 ansible_ssh_user=root

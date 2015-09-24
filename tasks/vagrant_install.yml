@@ -1,21 +1,30 @@
 ---
-  vagrant_package: "vagrant_{{ vagrant_version }}_{{ vagrant_arch }}.{{ package_provider }}"
+
+- include_vars: "{{ item }}"
+  tags: vagrant_install
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
 
 - name: download vagrant for your workstation
+  tags: vagrant_install
   get_url:
     url={{ vagrant_download_url }}/{{ vagrant_package }}
     dest={{ vagrant_download_dir }}/{{ vagrant_package }}
 
 - name: Install vagrant
+  tags: vagrant_install
+  sudo: yes
   apt:
     deb={{ vagrant_download_dir }}/{{ vagrant_package }}
-    state=installed
+    state=present
   when:
     ansible_os_family == 'Debian'
 
 - name: Install vagrant
+  tags: vagrant_install
+  sudo: yes
   yum:
     name={{ vagrant_download_dir }}/{{ vagrant_package }}
-    state=installed
+    state=present
   when:
     ansible_os_family == 'RedHat'

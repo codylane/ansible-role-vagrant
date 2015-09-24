@@ -1,0 +1,5 @@
+---
+- hosts: centos6u6
+  roles:
+    - role: vagrant
+      create_base_box: True
