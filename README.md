@@ -39,10 +39,21 @@ run.
 export VAGRANT_USER_PUB_KEY=$(cat ~/.ssh/id_dsa.pub)
 ```
 
-If you're you base box that you are configuring doesn't have ssh keys
-configured, you'll need to use the `-k` switch for ansible-playbook. You
-should only have to to this once.
+This also assumes that you have a base OS installed and it is in the
+running state and that you also know the ip address of the that OS.
+You'll need the ip address so that you can update your inventory file.
 
+If the base box that you are configuring doesn't have ssh keys
+configured, you'll need to use the `-k` switch for ansible-playbook. You
+should only have to to this once.  (See examples directory).  
+
+Here is an example of how to configure a new ubuntu1404 base box, which
+will prompt you for the root user's password and only run on the hosts
+in your inventory that match ubuntu1404
+```
+cd examples
+./setup_base_box -k -e 'hosts=ubuntu1404'
+```
 
 Role Variables
 --------------
@@ -51,9 +62,8 @@ This role makes use of multiple tasks that are included conditionaly
 when certian varaibles are set.  You can also specify which tasks you
 want to run on the command line by specifying `-t tag1,tag2`.
 
-(See the examples directory) for a quick examples on how to pass
+(See the examples directory) for quick examples on how to pass
 variables to the role to change the playbook run.
-
 
 
 Dependencies
