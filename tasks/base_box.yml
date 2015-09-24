@@ -1,3 +1,13 @@
 ---
-- name: configure a new base box
-  user:
+
+- include: selinux.yml
+- include: users.yml
+- include: base_box_cleanup.yml
+
+- name: configure sshd config
+  lineinfile:
+    dest={{ sshd_config }}
+    regexp=^UseDNS=
+    line=UseDNS=no
+    state=present
+  notify: restart ssh

@@ -1,7 +1,8 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role will handle setting up vagrant base boxes, configuring users,
+setting security contexts depending on how you choose to use this role.
 
 Requirements
 ------------

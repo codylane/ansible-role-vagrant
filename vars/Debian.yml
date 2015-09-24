@@ -1,0 +1,11 @@
+---
+ssh_service_name: ssh
+sshd_config: /etc/ssh/sshd_config
+
+package_provider: deb
+
+clean_commands:
+  - apt-get clean
+
+packages:
+  - python-selinux

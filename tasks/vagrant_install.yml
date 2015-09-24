@@ -1,0 +1,21 @@
+---
+  vagrant_package: "vagrant_{{ vagrant_version }}_{{ vagrant_arch }}.{{ package_provider }}"
+
+- name: download vagrant for your workstation
+  get_url:
+    url={{ vagrant_download_url }}/{{ vagrant_package }}
+    dest={{ vagrant_download_dir }}/{{ vagrant_package }}
+
+- name: Install vagrant
+  apt:
+    deb={{ vagrant_download_dir }}/{{ vagrant_package }}
+    state=installed
+  when:
+    ansible_os_family == 'Debian'
+
+- name: Install vagrant
+  yum:
+    name={{ vagrant_download_dir }}/{{ vagrant_package }}
+    state=installed
+  when:
+    ansible_os_family == 'RedHat'

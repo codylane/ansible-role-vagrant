@@ -1,7 +1,21 @@
 ---
 # defaults file for vagrant
 
+vagrant_download_dir: /tmp
+vagrant_download_url: https://dl.bintray.com/mitchellh/vagrant/
+vagrant_version: 1.7.4
+vagrant_arch: "{{ x86_64|default(ansible_architecture) }}"
+
+selinux:
+  - policy: disabled
+    state: disabled
+
 users:
   - name: vagrant
-    password: vagrant
+    password: $6$zAcTn/HdyBROS$2t8ix4YFgUlGMJ93HB8.WllRJLSG/YV846G2aznwUZ59QijtIr7ESh4zO2UEVeLfM90lC5h/Zn9xkxg.u0eea.
     shell: /bin/bash
+    ssh_pub_key:  "{{ lookup('env', 'VAGRANT_USER_PUB_KEY') }}"
+  - name: root
+    password: $6$zAcTn/HdyBROS$2t8ix4YFgUlGMJ93HB8.WllRJLSG/YV846G2aznwUZ59QijtIr7ESh4zO2UEVeLfM90lC5h/Zn9xkxg.u0eea.
+    shell: /bin/bash
+    ssh_pub_key:  "{{ lookup('env', 'VAGRANT_USER_PUB_KEY') }}"

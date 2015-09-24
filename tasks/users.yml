@@ -8,3 +8,20 @@
     shell={{ item.shell }}
   with_items:
     users
+
+- name: add authorized keys
+  authorized_key:
+    user={{ item.name }}
+    state=present
+    key="{{ item.ssh_pub_key }}"
+  with_items:
+    users
+
+- name: create sudoers file for user
+  template:
+    src=user-sudoers.d.j2
+    dest=/etc/sudoers.d/vagrant
+    owner=root
+    group=root
+    mode=0640
+    validate='visudo -cf %s'

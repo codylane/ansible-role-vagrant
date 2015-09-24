@@ -1,0 +1,12 @@
+---
+
+ssh_service_name: sshd
+sshd_config: /etc/ssh/sshd_config
+
+package_provider: rpm
+
+clean_commands:
+  - yum clean all
+
+packages:
+  - libselinux-python

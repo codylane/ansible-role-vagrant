@@ -1,0 +1,19 @@
+---
+
+- name: install python-selinux
+  yum:
+    state=installed
+    name=libselinux-python
+  when:
+    ansible_os_family == 'RedHat'
+
+- name: set selinux policy
+  selinux:
+    policy={{ item.policy }}
+    state={{ item.state }}
+    conf=/etc/sysconfig/selinux
+  with_items:
+    selinux
+  when:
+    ansible_os_family == 'RedHat'
+

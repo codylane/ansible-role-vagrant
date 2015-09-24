@@ -1,2 +1,7 @@
 ---
 # handlers file for vagrant
+
+- name: restart ssh
+  service:
+    name={{ ssh_service_name }}
+    state=restarted

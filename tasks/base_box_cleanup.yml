@@ -1,0 +1,6 @@
+---
+
+- name: cleanup routine to make vm image size smaller
+  command: "{{ item }}"
+  with_items:
+    clean_commands
