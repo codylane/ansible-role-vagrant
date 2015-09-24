@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ansible-playbook -i inventory base_box.yml
+ansible-playbook -i inventory -e 'hosts=all' base_box.yml $*
