@@ -4,29 +4,78 @@ Role Name
 This role will handle setting up vagrant base boxes, configuring users,
 setting security contexts depending on how you choose to use this role.
 
+Supported Distributions
+-----------------------
+
+Currenlty this role supports the following disributions:
+
+RedHat -> Installing vagrant, setting up RedHat base boxes
+
+Debian -> Installing vagrant 
+
+
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+The examples directory contains information on how to use the `vagrant`
+role.
+
+Also, it is assumed that the `root` user is configured and that you can
+login as root to the machine you want to turn into a vagrant base box.
+
+After the vagrant base box has been configured, the root user and the
+vagrant user will have a default password of `vagrant`.  You can
+override this if you'd like as well either using group_vars, encrypted
+vault password etc.  You'll need to set this up on your own if you'd
+like added security.
+
+## First time run on a base box
+
+You need to specify the location to you public key that you want to give
+to your vagrant box.  This example below will copy the contents of
+id_da.pub into the environment and be used during the ansible-playbook
+run.
+```
+export VAGRANT_USER_PUB_KEY=$(cat ~/.ssh/id_dsa.pub)
+```
+
+If you're you base box that you are configuring doesn't have ssh keys
+configured, you'll need to use the `-k` switch for ansible-playbook. You
+should only have to to this once.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+This role makes use of multiple tasks that are included conditionaly
+when certian varaibles are set.  You can also specify which tasks you
+want to run on the command line by specifying `-t tag1,tag2`.
+
+(See the examples directory) for a quick examples on how to pass
+variables to the role to change the playbook run.
+
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+sshpass needs to be installed
 
 Example Playbook
 ----------------
+## How to install vagrant on your workstation
+```
+cd exapmles
+./setup_workstation
+```
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## How to create a base box
+```
+cd examples
+./setup_base_box
+```
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+(See examples directory for playbook execution)
 
 License
 -------
@@ -35,5 +84,12 @@ BSD
 
 Author Information
 ------------------
+Cody Lane
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Email: Cody.Lane@gmail.com
+
+NOTE: I want to make this better for everyone and I hope that folks find
+this role useful.  If you find a bug, please submit a pull request and
+I'll take a look and merge it as ASAP.  If you'd like additional
+features, please also feel free to comment and I'll priortize these
+features.
