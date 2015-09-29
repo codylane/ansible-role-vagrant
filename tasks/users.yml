@@ -9,6 +9,12 @@
   with_items:
     users
 
+- name: assert that VAGRANT_USER_PUB_KEY environment variable is set
+  fail:
+    msg="The environment variable VAGRANT_USER_PUB_KEY must be set"
+  when:
+    lookup('env', 'VAGRANT_USER_PUB_KEY') == ''
+
 - name: add authorized keys
   authorized_key:
     user={{ item.name }}
