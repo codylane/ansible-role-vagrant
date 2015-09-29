@@ -1,0 +1,85 @@
+#!/bin/bash
+
+function err() {
+  echo "ERR: $* exiting" >&2
+  exit 1
+}
+
+function mount_dmg() {
+  local NAME="$1"
+
+  local MOUNT_OUTPUT=$(hdiutil mount $NAME)
+  local RC=$?
+
+  VOLUME_NAME=$(echo "$MOUNT_OUTPUT" | grep Volumes | awk '{print $3}')
+
+  [ ! -d "$VOLUME_NAME" ] && err "Unable to determine where the volume is mounted"
+
+  mount | grep "$NAME" >> /dev/null || return 0
+
+  return $RC
+}
+
+function umount_dmg() {
+  local NAME="$1"
+
+  [ ! -d "$NAME" ] && err "The mounted direcotry '$NAME' doesn't exist"
+
+
+  hdiutil unmount $NAME >> /dev/null
+  return $?
+}
+
+function install_pkg() {
+  local PKG_NAME="$1"
+
+  [ -e "$PKG_NAME" ] || err "Unable to find *.pkg file in $PWD"
+
+  local PKG_EXT="${PKG_NAME##*.}"
+
+  [ "$PKG_EXT" != "pkg" ] && err "The file $PKG_NAME doesn't end in pkg it ends in '$PKG_EXT'"
+
+  installer -package "$PKG_NAME" -target /
+  return $?
+}
+
+function usage() {
+  echo "USAGE: $CMD [/path/to/dmg]"
+  echo
+  echo "This command will mount a dmg, install all the *.pkg files to / and unmount the dmg"
+  exit 0
+}
+
+## main ##
+CMD="${0##*/}"
+BIN_DIR="${0%/*}"
+
+cd $BIN_DIR
+
+case "$1" in
+  -h|--help)
+    usage
+    ;;
+esac
+
+[ $(whoami) != 'root' ] && err "You must be root to run this script"
+
+DMG_PATH="$1"
+
+mount_dmg "$DMG_PATH" || err "Unable to mount dmg '$DMG_PATH'"
+
+for PKG in $(find $VOLUME_NAME -name '*.pkg' -type f)
+do
+  install_pkg "$PKG"
+  if [ $? -eq 0 ]; then
+    [ -z "$SUCCESS" ] && SUCCESS="$PKG" || SUCCESS="$SUCCESS\n$PKG"
+  else
+    [ -z "$FAILED" ] && FAILED="$PKG" || FAILED="$FAILED\n$PKG"
+  fi
+done
+
+umount_dmg "$VOLUME_NAME"
+
+[ -n "$FAILED" ] && err "Failed to install: $FAILED"
+[ -n "$SUCCESS" ] && echo "Installed: $SUCCESS"
+ exit 0

@@ -5,11 +5,19 @@
   with_first_found:
     - "{{ ansible_os_family }}.yml"
 
+- name: check to see if vagrant is already installed?
+  tags: vagrant_install
+  command: vagrant --version
+  register: is_vagrant_installed
+  ignore_errors: True
+
 - name: download vagrant for your workstation
   tags: vagrant_install
   get_url:
     url={{ vagrant_download_url }}/{{ vagrant_package }}
     dest={{ vagrant_download_dir }}/{{ vagrant_package }}
+  when:
+    is_vagrant_installed|failed or is_vagrant_installed.stdout.split(' ')[-1] != vagrant_version
 
 - name: Install vagrant
   tags: vagrant_install
@@ -28,3 +36,24 @@
     state=present
   when:
     ansible_os_family == 'RedHat'
+
+- name: deploy dmg helper install script
+  sudo: yes
+  tags: vagrant_install
+  template:
+    src=osx-dmg-install
+    dest=/opt/osx-dmg-install
+    owner=root
+    mode=0755
+  when:
+   ansible_os_family == 'Darwin'
+
+- name: Install vagrant
+  tags: vagrant_install
+  sudo: yes
+  command: /opt/osx-dmg-install {{ vagrant_download_dir }}/{{ vagrant_package }}
+  when:
+    ansible_os_family == 'Darwin' and (
+      is_vagrant_installed|failed or
+      is_vagrant_installed.stdout.split(' ')[-1] != vagrant_version
+    )

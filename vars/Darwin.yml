@@ -1,0 +1,4 @@
+---
+package_provider: dmg
+
+vagrant_package: "vagrant_{{ vagrant_version }}.{{ package_provider }}"
