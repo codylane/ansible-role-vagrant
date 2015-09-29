@@ -73,10 +73,15 @@ sshpass needs to be installed
 
 Example Playbook
 ----------------
-## How to install vagrant on your workstation
+## How to install vagrant on your workstation if no sudo password
 ```
 cd exapmles
 ./setup_workstation
+```
+## How to install vagrant on your workstation if sudo password
+```
+cd exapmles
+./setup_workstation -K
 ```
 
 ## How to create a base box
