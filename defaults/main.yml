@@ -7,6 +7,9 @@ vagrant_version: 1.7.4
 vagrant_arch: "{{ x86_64|default(ansible_architecture) }}"
 vagrant_package: "vagrant_{{ vagrant_version }}_{{ vagrant_arch }}.{{ package_provider }}"
 
+vagrant_plugins:
+  - vagrant-vbguest
+
 virtualbox_version: 5.0.4
 virtualbox_download_url: http://download.virtualbox.org/virtualbox
 

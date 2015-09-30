@@ -57,3 +57,5 @@
       is_vagrant_installed|failed or
       is_vagrant_installed.stdout.split(' ')[-1] != vagrant_version
     )
+
+- include: plugin.yml

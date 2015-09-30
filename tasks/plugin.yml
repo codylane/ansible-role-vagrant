@@ -1,0 +1,15 @@
+---
+
+- name: installed vagrant plugins
+  tags: vagrant_plugins
+  command: vagrant plugin list
+  register: vagrant_plugin_list
+  ignore_errors: True
+
+- name: install vagrant plugin
+  tags: vagrant_plugins
+  command: vagrant plugin install {{ item }}
+  with_items:
+    vagrant_plugins
+  when:
+    item not in vagrant_plugin_list.stdout
