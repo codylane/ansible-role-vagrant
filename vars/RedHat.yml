@@ -11,3 +11,7 @@ clean_commands:
 
 packages:
   - libselinux-python
+  - kernel-headers
+  - gcc
+  - make
+  - autoconf

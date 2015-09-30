@@ -9,3 +9,5 @@ clean_commands:
 
 packages:
   - python-selinux
+  - build-essential
+  - "linux-headers-{{ ansible_kernel }}"
