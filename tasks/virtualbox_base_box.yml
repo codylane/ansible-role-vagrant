@@ -1,0 +1,42 @@
+---
+
+- name: download the guest addtions
+  get_url:
+    url="{{ virtualbox_download_url }}/{{ virtualbox_version }}/VBoxGuestAdditions_{{ virtualbox_version }}.iso"
+    dest={{ ansible_user_dir }}/VBoxGuestAdditions_{{ virtualbox_version }}.iso
+    mode=0644
+  when:
+   ansible_virtualization_type == 'virtualbox'
+
+- name: see if VBoxGuestAdditions is already mounted
+  shell: mount | grep VBoxGuestAdditions_{{ virtualbox_version }}
+  ignore_errors: True
+  register: is_guest_additions_mounted
+  when:
+   ansible_virtualization_type == 'virtualbox'
+
+- name: create mount point directory for cdrom
+  file:
+    state=directory
+    dest=/mnt/cdrom
+    mode=0500
+    owner=root
+  when:
+   ansible_virtualization_type == 'virtualbox' and is_guest_additions_mounted|failed
+
+- name: Mount guest additions cdrom
+  command: mount -o loop {{ ansible_user_dir }}/VBoxGuestAdditions_{{ virtualbox_version }}.iso /mnt/cdrom
+  when:
+   ansible_virtualization_type == 'virtualbox' and is_guest_additions_mounted|failed
+
+- name: check to see if guest addtions are installed
+  shell: modinfo vboxguest | grep '^[vV]ersion' | awk '{print $2}'
+  ignore_errors: True
+  register: vbox_modinfo
+
+- name: Install guest additions
+  shell: /mnt/cdrom/VBox{{ ansible_system }}Additions.run
+  ignore_errors: True
+  when:
+   ansible_virtualization_type == 'virtualbox' and (vbox_modinfo|failed or vbox_modinfo.stdout != virtualbox_version)
+

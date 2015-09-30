@@ -11,3 +11,7 @@
     line=UseDNS=no
     state=present
   notify: restart ssh
+
+- include: virtualbox_base_box.yml
+  when:
+   ansible_virtualization_type == 'virtualbox'
