@@ -1,5 +1,5 @@
 [centos6u6]
-172.16.56.29 ansible_ssh_user=root
+172.16.56.33 ansible_ssh_user=root
 
 [ubuntu1404]
-172.16.56.19 ansible_ssh_user=root
+127.0.0.1 ansible_ssh_user=root ansible_ssh_port=2200

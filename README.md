@@ -4,15 +4,33 @@ Role Name
 This role will handle setting up vagrant base boxes, configuring users,
 setting security contexts depending on how you choose to use this role.
 
+Features
+--------
+* This role can handle installing vagrant on your workstation if it is
+  Debian, RedHat, OSX.
+
+* This role can configure selinux on RedHat based machines.
+
+* This role will setup the vagrant user, ssh password, and ssh keys
+
+* This role will configure the vagrant user's sudoer's perms.
+
+* This role will configure the root password, root ssh key for vagrant.
+
+* This role will download and install guest additions for virtualbox
+  guests
+
+
 Supported Distributions
 -----------------------
 
-Currenlty this role supports the following disributions:
+Currenlty this role supports the following guest disributions:
 
 RedHat -> Installing vagrant, setting up RedHat base boxes
 
 Debian -> Installing vagrant, setting up Debian base boxes
 
+This role can install vagrant on a RedHat, Debian or OSX workstation
 
 Requirements
 ------------

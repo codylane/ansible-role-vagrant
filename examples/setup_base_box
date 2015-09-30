@@ -1,3 +1,31 @@
 #!/bin/bash
 
+PUB_KEY=$(find $HOME/.ssh -name '*.pub' -type f)
+
+PUB_KEY_COUNT=$(echo "$PUB_KEY" | wc -l | sed -e 's/[ \t]*//g')
+
+if [ "$PUB_KEY_COUNT" -gt 1 ]; then
+  echo "Multiple keys found please select which one you want to use"
+
+  SELECTIONS=()
+
+  i=1
+  for KEY in $PUB_KEY
+  do
+    SELECTIONS[$i]="$KEY"
+    echo "$i: ${SELECTIONS[$i]}"
+    i=$((i + 1))
+  done
+
+  while true
+  do
+    read -p 'Enter choice >> ' SELECTION
+    [ "$SELECTION" -gt 0 ] && [ "$SELECTION" -lt $i ] && break
+  done
+
+  VAGRANT_SSH_PUB_KEY=$(cat "${SELECTIONS[$SELECTION]}")
+fi
+
+[ -z "$VAGRANT_SSH_PUB_KEY" ] && export VAGRANT_SSH_PUB_KEY=$(cat $PUB_KEY)
+
 ansible-playbook -i inventory -e 'hosts=all' base_box.yml $*
