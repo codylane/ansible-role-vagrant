@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function err() {
+  echo "ERR: $* exiting" >&2
+  exit 1
+}
+
 PUB_KEY=$(find $HOME/.ssh -name '*.pub' -type f)
 
 PUB_KEY_COUNT=$(echo "$PUB_KEY" | wc -l | sed -e 's/[ \t]*//g')
@@ -23,9 +28,11 @@ if [ "$PUB_KEY_COUNT" -gt 1 ]; then
     [ "$SELECTION" -gt 0 ] && [ "$SELECTION" -lt $i ] && break
   done
 
-  VAGRANT_SSH_PUB_KEY=$(cat "${SELECTIONS[$SELECTION]}")
+  VAGRANT_USER_PUB_KEY=$(cat "${SELECTIONS[$SELECTION]}")
 fi
 
-[ -z "$VAGRANT_SSH_PUB_KEY" ] && export VAGRANT_SSH_PUB_KEY=$(cat $PUB_KEY)
+[ -z "$VAGRANT_USER_PUB_KEY" ] && export VAGRANT_USER_PUB_KEY=$(cat $PUB_KEY)
+
+[ -z "$VAGRANT_USER_PUB_KEY" ] && err "You must set VAGRANT_USER_PUB_KEY"
 
 ansible-playbook -i inventory -e 'hosts=all' base_box.yml $*
