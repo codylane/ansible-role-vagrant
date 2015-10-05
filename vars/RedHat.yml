@@ -11,8 +11,10 @@ clean_commands:
 
 packages:
   - libselinux-python
+  - kernel-devel
   - kernel-headers
   - gcc
   - make
   - autoconf
   - tar
+  - bzip2
