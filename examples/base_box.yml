@@ -3,3 +3,4 @@
   roles:
     - role: vagrant
       create_base_box: True
+      virtualbox_version: 5.0.10

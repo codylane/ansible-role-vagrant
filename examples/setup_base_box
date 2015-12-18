@@ -28,7 +28,7 @@ if [ "$PUB_KEY_COUNT" -gt 1 ]; then
     [ "$SELECTION" -gt 0 ] && [ "$SELECTION" -lt $i ] && break
   done
 
-  VAGRANT_USER_PUB_KEY=$(cat "${SELECTIONS[$SELECTION]}")
+  export VAGRANT_USER_PUB_KEY=$(cat "${SELECTIONS[$SELECTION]}")
 fi
 
 [ -z "$VAGRANT_USER_PUB_KEY" ] && export VAGRANT_USER_PUB_KEY=$(cat $PUB_KEY)
