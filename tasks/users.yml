@@ -2,10 +2,10 @@
 
 - name: create vagrant base users
   user:
-    name={{ item.name }}
+    name="{{ item.name }}"
     state=present
-    password={{ item.password }}
-    shell={{ item.shell }}
+    password="{{ item.password }}"
+    shell="{{ item.shell }}"
   with_items:
     users
 
@@ -17,7 +17,7 @@
 
 - name: add authorized keys
   authorized_key:
-    user={{ item.name }}
+    user="{{ item.name }}"
     state=present
     key="{{ item.ssh_pub_key }}"
   with_items:

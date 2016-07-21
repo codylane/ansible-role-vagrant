@@ -14,8 +14,8 @@
 - name: download vagrant for your workstation
   tags: vagrant_install
   get_url:
-    url={{ vagrant_download_url }}/{{ vagrant_package }}
-    dest={{ vagrant_download_dir }}/{{ vagrant_package }}
+    url="{{ vagrant_download_url }}/{{ vagrant_package }}"
+    dest="{{ vagrant_download_dir }}/{{ vagrant_package }}"
   when:
     is_vagrant_installed|failed or is_vagrant_installed.stdout.split(' ')[-1] != vagrant_version
 
@@ -24,7 +24,7 @@
   become: yes
   become_user: root
   apt:
-    deb={{ vagrant_download_dir }}/{{ vagrant_package }}
+    deb="{{ vagrant_download_dir }}/{{ vagrant_package }}"
     state=present
   when:
     ansible_os_family == 'Debian'
@@ -34,7 +34,7 @@
   become: yes
   become_user: root
   yum:
-    name={{ vagrant_download_dir }}/{{ vagrant_package }}
+    name="{{ vagrant_download_dir }}/{{ vagrant_package }}"
     state=present
   when:
     ansible_os_family == 'RedHat'
@@ -55,7 +55,7 @@
   tags: vagrant_install
   become: yes
   become_user: root
-  command: /opt/osx-dmg-install {{ vagrant_download_dir }}/{{ vagrant_package }}
+  command: "/opt/osx-dmg-install {{ vagrant_download_dir }}/{{ vagrant_package }}"
   when:
     ansible_os_family == 'Darwin' and (
       is_vagrant_installed|failed or

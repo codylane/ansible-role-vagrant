@@ -6,7 +6,7 @@
 
 - name: configure sshd config
   lineinfile:
-    dest={{ sshd_config }}
+    dest="{{ sshd_config }}"
     regexp=^UseDNS=
     line=UseDNS=no
     state=present
