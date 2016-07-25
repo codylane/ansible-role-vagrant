@@ -10,13 +10,24 @@
   with_items:
     - "{{ repackage_boxes }}"
 
+- name: Checking if Vagrantfile already exists
+  tags: repackage
+  stat:
+    path="/tmp/{{ item }}/Vagrantfile"
+  register: vagrantfile_exists
+  with_items:
+    - "{{ repackage_boxes }}"
+
 - name: Creating temporary Vagrantfile
   tags: repackage
   template:
     src=vagrantfile-repackage.j2
-    dest="/tmp/{{ item }}/Vagrantfile"
-  with_items:
+    dest="/tmp/{{ item.0 }}/Vagrantfile"
+  when:
+    item.1.stat.exists == False
+  with_nested:
     - "{{ repackage_boxes }}"
+    - "{{ vagrantfile_exists.results }}"
 
 - name: Brining up vagrant machine
   tags: repackage
