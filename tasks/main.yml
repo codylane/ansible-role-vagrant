@@ -38,3 +38,8 @@
   tags: base_box
   when:
     create_base_box is defined
+
+- include: repackage_box.yml
+  tags: repackage
+  when:
+    repackage_box is defined

@@ -1,0 +1,44 @@
+---
+# This task helps you create a new base box from an existing box.
+
+- name: Creating temporary directories
+  tags: repackage
+  file:
+    path="/tmp/{{ item }}"
+    state=directory
+    mode=0755
+  with_items:
+    - "{{ repackage_boxes }}"
+
+- name: Creating temporary Vagrantfile
+  tags: repackage
+  template:
+    src=vagrantfile-repackage.j2
+    dest="/tmp/{{ item }}/Vagrantfile"
+  with_items:
+    - "{{ repackage_boxes }}"
+
+- name: Brining up vagrant machine
+  tags: repackage
+  shell: vagrant up
+  args:
+    chdir: "/tmp/{{ item }}"
+  with_items:
+    - "{{ repackage_boxes }}"
+
+- name: Getting ip address of your box
+  tags: repackage
+  shell: vagrant ssh-config | egrep '(HostName |User |Port |IdentityFile )' | sed -e 's/^  *//g' -e 's/HostName //g' -e 's/User //g' -e 's/Port //g' -e 's/IdentityFile //g'
+  args:
+    chdir: "/tmp/{{ item }}"
+  register: vagrant_ssh_config
+  with_items:
+    - "{{ repackage_boxes }}"
+
+- name: Creating temporary inventory file
+  tags: repackage
+  template:
+   src=temp-inventory.j2
+   dest=/tmp/inventory
+  with_items:
+    - "{{ vagrant_ssh_config }}"

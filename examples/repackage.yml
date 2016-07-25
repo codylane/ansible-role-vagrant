@@ -1,0 +1,10 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  roles:
+    - role: vagrant
+      create_base_box: False
+      install_vagrant: False
+      repackage_box: True
+      repackage_boxes:
+        - 'u1404'

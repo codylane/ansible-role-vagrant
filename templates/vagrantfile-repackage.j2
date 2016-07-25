@@ -1,0 +1,15 @@
+Vagrant.configure(2) do |config|
+  config.vm.define :default do |box|
+    box.vm.box = "{{ item }}"
+
+    box.vm.network "private_network", ip: "10.250.{{ 254|random(1, 1) }}.{{ 254|random(1, 1) }}", netmask: "255.255.0.0"
+
+    box.vm.provider :virtualbox do |vbox|
+      vbox.memory = 512
+      vbox.cpus = 1
+
+      vbox.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
+      vbox.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    end
+  end
+end
