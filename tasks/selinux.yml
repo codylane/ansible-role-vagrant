@@ -13,7 +13,7 @@
     state="{{ item.state }}"
     conf=/etc/sysconfig/selinux
   with_items:
-    selinux
+    - "{{ selinux }}"
   when:
     ansible_os_family == 'RedHat'
 

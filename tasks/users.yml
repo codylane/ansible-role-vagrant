@@ -7,7 +7,7 @@
     password="{{ item.password }}"
     shell="{{ item.shell }}"
   with_items:
-    users
+    - "{{ users }}"
 
 - name: assert that VAGRANT_USER_PUB_KEY environment variable is set
   fail:
@@ -21,7 +21,7 @@
     state=present
     key="{{ item.ssh_pub_key }}"
   with_items:
-    users
+    - "{{ users }}"
 
 - name: create sudoers file for user
   template:
