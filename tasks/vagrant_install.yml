@@ -39,6 +39,15 @@
   when:
     ansible_os_family == 'RedHat'
 
+- name: create /opt if it doesn't exist
+  become: yes
+  become_user: root
+  tags: vagrant_install
+  file:
+    path=/opt
+    state=directory
+    mode=0775
+
 - name: deploy dmg helper install script
   become: yes
   become_user: root
