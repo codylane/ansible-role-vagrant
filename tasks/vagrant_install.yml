@@ -14,8 +14,9 @@
 - name: download vagrant for your workstation
   tags: vagrant_install
   get_url:
-    url="{{ vagrant_download_url }}/{{ vagrant_package }}"
-    dest="{{ vagrant_download_dir }}/{{ vagrant_package }}"
+    url: "{{ vagrant_download_url }}/{{ vagrant_package }}"
+    dest: "{{ vagrant_download_dir }}/{{ vagrant_package }}"
+    validate_certs: False
   when:
     is_vagrant_installed|failed or is_vagrant_installed.stdout.split(' ')[-1] != vagrant_version
 
@@ -24,8 +25,8 @@
   become: yes
   become_user: root
   apt:
-    deb="{{ vagrant_download_dir }}/{{ vagrant_package }}"
-    state=present
+    deb: "{{ vagrant_download_dir }}/{{ vagrant_package }}"
+    state: present
   when:
     ansible_os_family == 'Debian'
 
@@ -34,8 +35,8 @@
   become: yes
   become_user: root
   yum:
-    name="{{ vagrant_download_dir }}/{{ vagrant_package }}"
-    state=present
+    name: "{{ vagrant_download_dir }}/{{ vagrant_package }}"
+    state: present
   when:
     ansible_os_family == 'RedHat'
 
@@ -44,19 +45,19 @@
   become_user: root
   tags: vagrant_install
   file:
-    path=/opt
-    state=directory
-    mode=0775
+    path: /opt
+    state: directory
+    mode: 0775
 
 - name: deploy dmg helper install script
   become: yes
   become_user: root
   tags: vagrant_install
   template:
-    src=osx-dmg-install
-    dest=/opt/osx-dmg-install
-    owner=root
-    mode=0755
+    src: osx-dmg-install
+    dest: /opt/osx-dmg-install
+    owner: root
+    mode: 0755
   when:
    ansible_os_family == 'Darwin'
 

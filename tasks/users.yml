@@ -2,32 +2,32 @@
 
 - name: create vagrant base users
   user:
-    name="{{ item.name }}"
-    state=present
-    password="{{ item.password }}"
-    shell="{{ item.shell }}"
+    name: "{{ item.name }}"
+    state: present
+    password: "{{ item.password }}"
+    shell: "{{ item.shell }}"
   with_items:
     - "{{ users }}"
 
 - name: assert that VAGRANT_USER_PUB_KEY environment variable is set
   fail:
-    msg="The environment variable VAGRANT_USER_PUB_KEY must be set"
+    msg: "The environment variable VAGRANT_USER_PUB_KEY must be set"
   when:
     lookup('env', 'VAGRANT_USER_PUB_KEY') == ''
 
 - name: add authorized keys
   authorized_key:
-    user="{{ item.name }}"
-    state=present
-    key="{{ item.ssh_pub_key }}"
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ item.ssh_pub_key }}"
   with_items:
     - "{{ users }}"
 
 - name: create sudoers file for user
   template:
-    src=user-sudoers.d.j2
-    dest=/etc/sudoers.d/vagrant
-    owner=root
-    group=root
-    mode=0640
-    validate='visudo -cf %s'
+    src: user-sudoers.d.j2
+    dest: /etc/sudoers.d/vagrant
+    owner: root
+    group: root
+    mode: 0640
+    validate: 'visudo -cf %s'

@@ -2,9 +2,9 @@
 
 - name: download the guest addtions
   get_url:
-    url="{{ virtualbox_download_url }}/{{ virtualbox_version }}/VBoxGuestAdditions_{{ virtualbox_version }}.iso"
-    dest="{{ ansible_user_dir }}/VBoxGuestAdditions_{{ virtualbox_version }}.iso"
-    mode=0644
+    url: "{{ virtualbox_download_url }}/{{ virtualbox_version }}/VBoxGuestAdditions_{{ virtualbox_version }}.iso"
+    dest: "{{ ansible_user_dir }}/VBoxGuestAdditions_{{ virtualbox_version }}.iso"
+    mode: 0644
   when:
    ansible_virtualization_type == 'virtualbox'
 
@@ -17,10 +17,10 @@
 
 - name: create mount point directory for cdrom
   file:
-    state=directory
-    dest=/mnt/cdrom
-    mode=0500
-    owner=root
+    state: directory
+    dest: /mnt/cdrom
+    mode: 0500
+    owner: root
   when:
    ansible_virtualization_type == 'virtualbox' and is_guest_additions_mounted|failed
 

@@ -6,10 +6,10 @@
 
 - name: configure sshd config
   lineinfile:
-    dest="{{ sshd_config }}"
-    regexp=^UseDNS=
-    line=UseDNS=no
-    state=present
+    dest: "{{ sshd_config }}"
+    regexp: ^UseDNS=
+    line: UseDNS=no
+    state: present
   notify: restart ssh
 
 - include: virtualbox_base_box.yml
